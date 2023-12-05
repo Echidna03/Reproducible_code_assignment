@@ -128,3 +128,7 @@ The analysis of variance test performed produced a p-value of 0.97, meaning that
 ### Conclusion
 
 The outcome of this analysis suggests that Island of origin does not explain a signficiant degree of the variance in body mass across the sampled population of Adelie penguins. This could potentially be explained by the fact that the body mass of the penguins in each colony is primarily dependent on feeding prior to the breeding season, when the penguins accumulate fat reserves, rather than feeding during the breeding season  (Ainley & deLeiris, 2002). As Adelie penguin colonies only assemble during the breeding season, penguins being part of the same breeding colony may not be reflected in those penguins sharing feeding grounds throughout the rest of the year, and as such, their breeding colony would have little bearing on their hunting success, and therefore body mass. Future studies could further explore this hypothesis by collecting data on Adelie penguin body mass at various sites just prior to their migration to breeding sites, such sites would have to be sufficiently far apart to ensure the hunting ranges of the penguins samples did not significantly overlap.
+
+### Bibliography
+Ainley, D., & de Leiris, L. (2002). The Adélie Penguin : Bellwether of Climate Change. New York: Columbia University Press.
+
