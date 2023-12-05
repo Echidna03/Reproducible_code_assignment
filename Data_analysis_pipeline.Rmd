@@ -1,0 +1,130 @@
+---
+title: "Data_analysis_pipeline"
+author: "Jack Pitman-Wallace"
+date: "2023-12-05"
+output: html_document
+---
+
+### Introduction
+
+Adelie penguins are one of just 5 species of penguins native to the arctic. During the mating season they congregate at rookeries along the coast of Antarctica. Whilst based at these sites, the Adelie penguins forage in the seas 20-100km out from their coastal rookeries. This analysis aims to explore the question of whether different rookeries are associated with differences in Adelie penguin body mass, potentially due differing suitability of the foraging grounds associated with the rookeries on Torgersten, Biscoe and the Dream Islands.
+
+```{r Data Exploration}
+
+# Install packages
+
+install.packages(c("palmerpenguins", "ggplot2", "janitor", "dplyr", "svglite", "ggstatsplot")) 
+
+#Load packages 
+
+library(palmerpenguins)
+library(ggplot2)
+library(janitor)
+library(dplyr)
+library(svglite)
+library(ggstatsplot)
+
+# Load functions
+
+source("functions/cleaning.R")
+source("functions/plotting.R")
+
+#Create a .csv file containing penguins_raw data
+
+write.csv(penguins_raw, "data_raw/penguins_raw.csv")
+
+#Read penguins_raw.csv and create an object containing its stored data
+
+penguins_raw <- read.csv("data_raw/penguins_raw.csv")
+
+#Print names of columns from penguins_raw
+
+names(penguins_raw)
+
+#Print first 10 rows of penguins_raw  
+
+head(penguins_raw)
+
+#penguins_raw contains lots of empty entries, as well as comments and blood isotope data which is not relevant to our analysis. Remove them using the cleaning() function loaded earlier and create new object from this cleaned data.
+
+penguins_clean  <- penguins_raw %>%
+      cleaning()  %>%
+    shorten_species() # Shorten species names 
+
+head(penguins_clean)
+
+names(penguins_clean) 
+
+#Write a new .csv file containing contents of penguins_clean
+
+write.csv(penguins_clean, "data_clean/penguins_clean.csv")
+
+# Create new object without rows with body mass 'NA'
+
+penguins_bodymass <- remove_empty_bodymass(penguins_clean)
+
+# Create a new object from penguins_bodymass, only containing Adelie data
+
+adelie_bodymass <- filter_by_species(penguins_bodymass, "Adelie")
+
+# Save as .csv
+
+write.csv(adelie_bodymass, "data_clean/adelie_bodymass.csv")
+
+#Create an exploratory plot
+
+explo_figure <- plot_explo_figure(adelie_bodymass)
+
+explo_figure          
+save_explo_plot_svg(adelie_bodymass, 
+                      "figures/fig01_vector.svg", 
+                      size = 15, scaling = 1)
+                        
+                        
+```
+
+### Hypothesis
+
+A significant degree of the variance in Adelie penguin body mass is explained by their island of origin.
+
+### Statistical Methods
+
+```{r Statistics}
+
+# Create a new object from penguins_bodymass, only containing Adelie data
+
+adelie_bodymass <- filter_by_species(penguins_bodymass, "Adelie")
+
+# Save as .csv
+
+write.csv(adelie_bodymass, "data_clean/adelie_bodymass.csv")
+
+# Use qqplot to establish normality
+
+qqnorm(adelie_bodymass$body_mass_g)
+qqline(adelie_bodymass$body_mass_g)
+
+# Perform analysis of variance based on linear model reflecting hypothesised relationship
+
+adelie_anova <- anova(lm( body_mass_g ~ island , data = adelie_bodymass))
+
+adelie_anova
+
+```
+
+### Results & Discussion
+
+```{r Plotting Results}
+
+
+#Plot results figure visualising outcome of ANOVA
+stats_plot(adelie_bodymass)
+
+adelie_anova
+```
+The analysis of variance test performed produced a p-value of 0.97, meaning that there is a 97% chance of observing an F-value as or more extreme than the observed F-value (0.03) under the null hypothesis. 0.97 is greater than critical value (0.05), therefore fail to reject the null hypothesis: Island of origin does not explain a significant degree of the variance in Adelie penguin bodymass. 
+
+
+### Conclusion
+
+The outcome of this analysis suggests that Island of origin does not explain a signficiant degree of the variance in body mass across the sampled population of Adelie penguins. This could potentially be explained by the fact that the body mass of the penguins in each colony is primarily dependent on feeding prior to the breeding season, when the penguins accumulate fat reserves, rather than feeding during the breeding season  (Ainley & deLeiris, 2002). As Adelie penguin colonies only assemble during the breeding season, penguins being part of the same breeding colony may not be reflected in those penguins sharing feeding grounds throughout the rest of the year, and as such, their breeding colony would have little bearing on their hunting success, and therefore body mass. Future studies could further explore this hypothesis by collecting data on Adelie penguin body mass at various sites just prior to their migration to breeding sites, such sites would have to be sufficiently far apart to ensure the hunting ranges of the penguins samples did not significantly overlap.
