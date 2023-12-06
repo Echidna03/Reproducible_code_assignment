@@ -1,6 +1,5 @@
 ---
 title: "Data_analysis_pipeline"
-author: "Jack Pitman-Wallace"
 date: "2023-12-05"
 output: html_document
 ---
