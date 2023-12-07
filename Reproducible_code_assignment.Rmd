@@ -1,0 +1,334 @@
+---
+title: "Reproducible code and figures assignment MT23"
+output:
+  html_document: default
+  pdf_document: default
+date: "2023-10-09"
+---
+
+```{r setup, include=TRUE, results='hide'}
+
+# Install packages
+
+install.packages(c("knitr", "palmerpenguins", "ggplot2", "janitor", "dplyr", "svglite", "ggstatsplot")) 
+
+#Load packages
+
+library(knitr)
+library(palmerpenguins)
+library(ggplot2)
+library(janitor)
+library(dplyr)
+library(svglite)
+library(ggstatsplot)
+
+# Load functions
+
+source("functions/cleaning.R")
+source("functions/plotting.R")
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*The following is a template .rmd RMarkdown file for you to use for your homework submission.*
+
+*Please Knit your .rmd to a PDF format or HTML and submit that with no identifiers like your name.*
+
+*To create a PDF, first install tinytex and load the package. Then press the Knit arrow and select "Knit to PDF".*
+
+## QUESTION 01: Data Visualisation for Science Communication
+
+*Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. **Do not make a boxplot**.*
+
+*Use the following references to guide you:*
+
+-   [*https://www.nature.com/articles/533452a*](https://www.nature.com/articles/533452a){.uri}
+-   [*https://elifesciences.org/articles/16800*](https://elifesciences.org/articles/16800){.uri}
+
+*Note: Focus on visual elements rather than writing misleading text on it.*
+
+### a) Provide your figure here:
+
+```{r bad figure code, echo=FALSE}
+
+
+
+library(palmerpenguins)
+#Create a .csv file containing penguins_raw data
+
+write.csv(penguins_raw, "data_raw/penguins_raw.csv")
+
+#Read penguins_raw.csv and create an object containing its stored data
+
+penguins_raw <- read.csv("data_raw/penguins_raw.csv")
+
+penguins_clean  <- penguins_raw %>%
+      cleaning()  %>%
+    shorten_species() # Shorten species names 
+
+ggplot(data = penguins_clean, 
+                          aes(x = culmen_length_mm, 
+                              y = body_mass_g)) +
+                          geom_hex(bins=10, aes(colour= island), show.legend = TRUE)+
+                          ylim(0,6000) +
+                          xlim(0,60) +
+                          xlab("Beak (mm)") +
+                          ylab("Body (g)") 
+
+```
+
+### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
+
+This figure features a range of design choices which mislead the reader about the underlying data: first is the choice to present the data in a series of hexagonal bins, and not present the actual data points, despite there being few enough individual points to present all of them without overplotting becoming an issue, making the graph unnecessarily information poor. This is compounded by the low resolution of the bins, which results in a wide range of values being represented by a single visual element. In addition, the bottom limits on the axes are too low, leaving wasted space where no information is being conveyed- this violates the principle of minimalism in scientific figures, and compresses the data into a small part of the available space unnecessarily, making it more difficult to read (Hehman & Xie, 2021). Furthermore, the axis labels are vague and uninformative, and therefore do not convey what was measured accurately, better axes would be 'Culmen Length (mm)' and 'Body Mass (g)' (Biegel & Kamat, 2021). Finally, the use of colour is poor- the use of two competing colour schemes to represent different information on each hex reduces the immediate readability of the figure (Nguyen, Jung & Gupta, 2021). In ddition, the use of red and green in the colour scheme makes the figure less accessible for people who are red-green colour blind, which is the most common form of colourblindness (Hehman & Xie, 2021).
+
+
+### Bibliography
+
+Biegel, C., & Kamat, P. (2021). Five Common Pitfalls to Avoid while Composing Scientific Figures. ACS Energy Letters, 6, 4309-4310.
+Hehman, E., & Xie, S. (2021). Doing Better Data Visualization. Advances in Methods and Practices in Psychological Science, 4(4), 1-18.
+Nguyen, V., Jung, K., & Gupta, V. (2021). Examining data visualization pitfalls in scientific publications. Visual Computing for Industry, Biomedicine and Art, 4(27).
+
+
+
+------------------------------------------------------------------------
+
+## QUESTION 2: Data Pipeline
+
+*Write a data analysis pipeline in your .rmd RMarkdown file. You should be aiming to write a clear explanation of the steps, the figures visible, as well as clear code.*
+
+*Your code should include the steps practiced in the lab session:*
+
+-   *Load the data*
+
+-   *Appropriately clean the data*
+
+-   *Create an Exploratory Figure (**not a boxplot**)*
+
+-   *Save the figure*
+
+-   ***New**: Run a statistical test*
+
+-   ***New**: Create a Results Figure*
+
+-   *Save the figure*
+
+*An exploratory figure shows raw data, such as the distribution of the data. A results figure demonstrates the stats method chosen, and includes the results of the stats test.*
+
+*Between your code, communicate clearly what you are doing and why.*
+
+*Your text should include:*
+
+-   *Introduction*
+
+-   *Hypothesis*
+
+-   *Stats Method*
+
+-   *Results*
+
+-   *Discussion*
+
+-   *Conclusion*
+
+*You will be marked on the following:*
+
+### a) Your code for readability and functionality
+
+### b) Your figures for communication
+
+### c) Your text communication of your analysis
+
+*Below is a template you can use.*
+
+------------------------------------------------------------------------
+
+### Introduction
+
+Adelie penguins are one of just 5 species of penguins native to the arctic. During the mating season they congregate at rookeries along the coast of Antarctica. Whilst based at these sites, the Adelie penguins forage in the seas 20-100km out from their coastal rookeries. This analysis aims to explore the question of whether different rookeries are associated with differences in Adelie penguin body mass, potentially due differing suitability of the foraging grounds associated with the rookeries on Torgersten, Biscoe and the Dream Islands.
+
+```{r Data Exploration}
+
+# Install packages
+
+#install.packages(c("knitr", "palmerpenguins", "ggplot2", "janitor", "dplyr", "svglite", "ggstatsplot")) 
+
+#Load packages
+
+#library(knitr)
+#library(palmerpenguins)
+#library(ggplot2)
+#library(janitor)
+#library(dplyr)
+#library(svglite)
+#library(ggstatsplot)
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load functions
+
+#source("functions/cleaning.R")
+#source("functions/plotting.R")
+
+#Create a .csv file containing penguins_raw data
+
+write.csv(penguins_raw, "data_raw/penguins_raw.csv")
+
+#Read penguins_raw.csv and create an object containing its stored data
+
+penguins_raw <- read.csv("data_raw/penguins_raw.csv")
+
+#Print names of columns from penguins_raw
+
+names(penguins_raw)
+
+#Print first 10 rows of penguins_raw  
+
+head(penguins_raw)
+
+#penguins_raw contains lots of empty entries, as well as comments and blood isotope data which is not relevant to our analysis. Remove them using the cleaning() function loaded earlier and create new object from this cleaned data.
+
+penguins_clean  <- penguins_raw %>%
+      cleaning()  %>%
+    shorten_species() # Shorten species names 
+
+head(penguins_clean)
+
+names(penguins_clean) 
+
+#Write a new .csv file containing contents of penguins_clean
+
+write.csv(penguins_clean, "data_clean/penguins_clean.csv")
+
+# Create new object without rows which contain 'NA'
+
+penguins_bodymass <-  remove_NA(penguins_clean)
+
+# Create a new object from penguins_bodymass, only containing Adelie data
+
+adelie_bodymass <- filter_by_species(penguins_bodymass, "Adelie")
+
+# Save as .csv
+
+write.csv(adelie_bodymass, "data_clean/adelie_bodymass.csv")
+
+#Create an exploratory plot
+
+explo_figure <- plot_explo_figure(adelie_bodymass)
+
+explo_figure          
+save_explo_plot_svg(adelie_bodymass, 
+                      "figures/fig01_vector.svg", 
+                      size = 15, scaling = 1)
+                        
+                        
+```
+
+### Hypothesis
+
+A significant degree of the variance in Adelie penguin body mass is explained by their island of origin.
+
+### Statistical Methods
+
+```{r Statistics}
+
+# Create a new object from penguins_bodymass, only containing Adelie data
+
+adelie_bodymass <- filter_by_species(penguins_bodymass, "Adelie")
+
+# Save as .csv
+
+write.csv(adelie_bodymass, "data_clean/adelie_bodymass.csv")
+
+# Use qqplot to establish normality
+
+qqplot<- qqnorm(adelie_bodymass$body_mass_g)
+
+qqplot
+save_qqplot_svg(adelie_bodymass,
+                    "figures/fig02_vector.svg", size = 15, scaling = 1)
+
+
+
+# Perform analysis of variance based on linear model reflecting hypothesised relationship
+
+adelie_anova <- anova(lm( body_mass_g ~ island , data = adelie_bodymass))
+
+adelie_anova
+
+```
+
+### Results & Discussion
+
+```{r Plotting Results}
+
+
+#Plot results figure visualising outcome of ANOVA
+adelie_stats_plot <- stats_figure(adelie_bodymass)
+
+save_stats_plot_svg(adelie_bodymass,
+                    "figures/fig03_vector.svg", size = 15, scaling = 1)
+
+adelie_stats_plot
+
+adelie_anova
+
+
+```
+The analysis of variance test performed produced a p-value of 0.97, meaning that there is a 97% chance of observing an F-value as or more extreme than the observed F-value (0.03) under the null hypothesis. 0.97 is greater than critical value (0.05), therefore fail to reject the null hypothesis: Island of origin does not explain a significant degree of the variance in Adelie penguin bodymass. 
+
+
+### Conclusion
+
+The outcome of this analysis suggests that Island of origin does not explain a signficiant degree of the variance in body mass across the sampled population of Adelie penguins. This could potentially be explained by the fact that the body mass of the penguins in each colony is primarily dependent on feeding prior to the breeding season, when the penguins accumulate fat reserves, rather than feeding during the breeding season  (Ainley & deLeiris, 2002). As Adelie penguin colonies only assemble during the breeding season, penguins being part of the same breeding colony may not be reflected in those penguins sharing feeding grounds throughout the rest of the year, and as such, their breeding colony would have little bearing on their hunting success, and therefore body mass. Future studies could further explore this hypothesis by collecting data on Adelie penguin body mass at various sites just prior to their migration to breeding sites, such sites would have to be sufficiently far apart to ensure the hunting ranges of the penguins samples did not significantly overlap.
+
+### Bibliography
+
+Ainley, D., & de Leiris, L. (2002). The Adélie Penguin : Bellwether of Climate Change. New York: Columbia University Press.
+
+------------------------------------------------------------------------
+
+## QUESTION 3: Open Science
+
+### a) GitHub
+
+*Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
+
+*GitHub link:*
+
+*You will be marked on your repo organisation and readability.*
+
+### b) Share your repo with a partner, download, and try to run their data pipeline.
+
+*Partner's GitHub link:*
+
+https://github.com/RCodingAssignments/Reproducible-Science-and-Figures
+
+*You **must** provide this so I can verify there is no plagiarism between you and your partner.*
+
+### c) Reflect on your experience running their code. (300-500 words)
+
+-   *What elements of your partner's code helped you to understand their data pipeline?*
+
+My partner included a range of elments that made understanding their code easier. Before even beginning to run the code, they included a concise READme in their GitHub repository which laid out how the files should be organised within the R project folder in order to ensure the code ran effectively. Furthermore, their code was divided into short chunks with thorough annotations explaining both the function and rationale for each section of code. By dividing their code into these short chunks, it made it much easier to follow the annotations as I ran the code, rather than having to read through the annotations for one large chunk before running it. My partner also included a clear introduction and conclusion, which laid out the scientific rationale and their interpretation of their analysis, this further helped to contextualise the code I was running, and placed using their code as a tool to answer clearly defined scientific question at the centre of their approach.
+
+-   *Did it run? Did you need to fix anything?*
+
+My partner's code ran on the first attempt with no issues.
+
+-   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
+
+Annotations were placed somewhat inconsistently at times- sometimes before code and sometimes afterwards. Ensuring that this remains consistent would help to improve the readability. Overall however, the code was very well presented and easy to understand.
+
+-   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
+
+My partner used separate function scripts to produce their figures, which makes it slightly more difficult to alter their figures than if the code for the figures was included directly in the main script, as modifications have to be made in a separate location and then reloaded using the source() function before they will be reflected in the figures. I think this is a justified tradeoff, however, as it makes the main script much less cluttered, and reduces the risk of constant tweaking which can rapidly become confusing e.g. if the author forgets to update their GitHub repo to reflect subtle alterations. Furthermore, my partner clearly stated which .R file each function was stored in before using them, making it easy to find and edit them if necessary.
+
+### d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
+
+-   *What improvements did they suggest, and do you agree?*
+
+My partner suggested two key improvements to my pipeline: first, they suggested including a READme file in my GitHub repository in order to explain which folders the user needed to create and place specific files into in order to make the transition from GitHub to the user's own computer as seamless as possible- I very much agree with this recommendation- this was an oversight reflecting a failure on my part to fully consider the pitfalls a new user would have in accessing my code. My partner also suggested the increased use of pipes to make the code cleaner and more concise, and I once again agree with this recommendation.
+
+-   *What did you learn about writing code for other people?*
+
+I learnt a couple of key things over the course of this project: first, that accessible code is never just limited to the script itself, it also requires clear supplementary information to allow a naive user to recreate the environment in which the original script was produced on their own computer, for example, ensuring that the correct filepaths are in place before they attempt to run the script. Furthermore, running my partner's code brought home the importance of building a pipeline with user experience in mind- for example, dividing the code into chunks may break it up and make it slightly slower to work through, but it provides the end user with an opportunity to read and understand the code as they work through it, rather than reading through one large block of code and then executing it, or worse, simply skimming over text because it appears to intimidating. Finally, approaching a project with accessibility for a naive user at the forefront of my mind brought home the importance of ensuring that code is not just functional, but also concise and logically organised through the use of techniques such as piping and separate function scripts.
