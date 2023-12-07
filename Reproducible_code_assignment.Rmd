@@ -6,7 +6,7 @@ output:
 date: "2023-10-09"
 ---
 
-```{r setup, include=TRUE, results='hide'}
+```{r setup, include=FALSE}
 
 # Install packages
 
@@ -29,13 +29,6 @@ source("functions/plotting.R")
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-*The following is a template .rmd RMarkdown file for you to use for your homework submission.*
-
-*Please Knit your .rmd to a PDF format or HTML and submit that with no identifiers like your name.*
-
-*To create a PDF, first install tinytex and load the package. Then press the Knit arrow and select "Knit to PDF".*
-
 ## QUESTION 01: Data Visualisation for Science Communication
 
 *Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. **Do not make a boxplot**.*
@@ -93,52 +86,6 @@ Nguyen, V., Jung, K., & Gupta, V. (2021). Examining data visualization pitfalls 
 ------------------------------------------------------------------------
 
 ## QUESTION 2: Data Pipeline
-
-*Write a data analysis pipeline in your .rmd RMarkdown file. You should be aiming to write a clear explanation of the steps, the figures visible, as well as clear code.*
-
-*Your code should include the steps practiced in the lab session:*
-
--   *Load the data*
-
--   *Appropriately clean the data*
-
--   *Create an Exploratory Figure (**not a boxplot**)*
-
--   *Save the figure*
-
--   ***New**: Run a statistical test*
-
--   ***New**: Create a Results Figure*
-
--   *Save the figure*
-
-*An exploratory figure shows raw data, such as the distribution of the data. A results figure demonstrates the stats method chosen, and includes the results of the stats test.*
-
-*Between your code, communicate clearly what you are doing and why.*
-
-*Your text should include:*
-
--   *Introduction*
-
--   *Hypothesis*
-
--   *Stats Method*
-
--   *Results*
-
--   *Discussion*
-
--   *Conclusion*
-
-*You will be marked on the following:*
-
-### a) Your code for readability and functionality
-
-### b) Your figures for communication
-
-### c) Your text communication of your analysis
-
-*Below is a template you can use.*
 
 ------------------------------------------------------------------------
 
@@ -291,19 +238,15 @@ Ainley, D., & de Leiris, L. (2002). The Adélie Penguin : Bellwether of Climate 
 
 ### a) GitHub
 
-*Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
-
 *GitHub link:*
 
-*You will be marked on your repo organisation and readability.*
+https://github.com/Echidna03/Reproducible_code_assignment
 
 ### b) Share your repo with a partner, download, and try to run their data pipeline.
 
 *Partner's GitHub link:*
 
 https://github.com/RCodingAssignments/Reproducible-Science-and-Figures
-
-*You **must** provide this so I can verify there is no plagiarism between you and your partner.*
 
 ### c) Reflect on your experience running their code. (300-500 words)
 
